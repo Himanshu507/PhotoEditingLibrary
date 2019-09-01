@@ -119,7 +119,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         mPhotoEditor.setOnPhotoEditorListener(this);
 
         //Set Image Dynamically
-        //mPhotoEditorView.getSource().setImageBitmap(bitmap);
+        mPhotoEditorView.getSource().setImageResource(R.drawable.transparent);
         mRvFilters.setVisibility(View.GONE);
     }
 
