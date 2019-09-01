@@ -1,6 +1,7 @@
 package com.himanshu.editlibrary.EditLib;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+
+import com.himanshu.editlibrary.Utils.Temp_holders;
 
 
 class MultiTouchListener implements OnTouchListener {
@@ -35,9 +38,13 @@ class MultiTouchListener implements OnTouchListener {
     private boolean mIsTextPinchZoomable;
     private OnPhotoEditorListener mOnPhotoEditorListener;
 
+    public static Temp_holders temp_holders ;
+
+
     MultiTouchListener(@Nullable View deleteView, RelativeLayout parentView,
                        ImageView photoEditImageView, boolean isTextPinchZoomable,
                        OnPhotoEditorListener onPhotoEditorListener) {
+        temp_holders = new Temp_holders();
         mIsTextPinchZoomable = isTextPinchZoomable;
         mScaleGestureDetector = new ScaleGestureDetector(new ScaleGestureListener());
         mGestureListener = new GestureDetector(new GestureListener());
@@ -59,7 +66,8 @@ class MultiTouchListener implements OnTouchListener {
         } else if (degrees < -180.0f) {
             degrees += 360.0f;
         }
-
+        Log.d("TAG", "Angle = "+degrees);
+        temp_holders.setAngle(degrees);
         return degrees;
     }
 
@@ -69,6 +77,8 @@ class MultiTouchListener implements OnTouchListener {
 
         float scale = view.getScaleX() * info.deltaScale;
         scale = Math.max(info.minimumScale, Math.min(info.maximumScale, scale));
+        Log.d("TAG", "Scale = " + scale );
+        temp_holders.setScale(scale);
         view.setScaleX(scale);
         view.setScaleY(scale);
 
@@ -138,6 +148,7 @@ class MultiTouchListener implements OnTouchListener {
                     float currY = event.getY(pointerIndexMove);
                     if (!mScaleGestureDetector.isInProgress()) {
                         adjustTranslation(view, currX - mPrevX, currY - mPrevY);
+
                     }
                 }
                 break;
@@ -218,6 +229,9 @@ class MultiTouchListener implements OnTouchListener {
             info.minimumScale = minimumScale;
             info.maximumScale = maximumScale;
             move(view, info);
+            Log.d("TAG", "x = "+ mPivotX + " , y = "+mPivotY);
+            temp_holders.setTranslationx(mPivotX);
+            temp_holders.setTranslationy(mPivotY);
             return !mIsTextPinchZoomable;
         }
     }

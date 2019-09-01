@@ -49,6 +49,7 @@
             <ImageView
                 android:id="@+id/filter_img"
                 android:layout_width="40dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
@@ -59,6 +60,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Filters"
@@ -101,6 +103,7 @@
 
             <ImageView
                 android:id="@+id/sticker"
+                android:visibility="gone"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -112,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="26dp"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Stickers"
@@ -129,6 +133,7 @@
                 android:id="@+id/Tools"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="2"
@@ -138,6 +143,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Tools"
@@ -147,6 +153,51 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <TextView
+        android:id="@+id/scale"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="scale = "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/angle"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:hint="Angle = "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scale" />
+
+
+    <TextView
+        android:id="@+id/x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="translate x = "
+        app:layout_constraintStart_toEndOf="@+id/scale"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:hint="translate y = "
+        app:layout_constraintStart_toEndOf="@+id/angle"
+        app:layout_constraintTop_toTopOf="@+id/x" />
+
+    <ImageView
+        android:id="@+id/gif"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_marginTop="48dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.himanshu.editlibrary.EditLib.PhotoEditorView
         android:id="@+id/photoEditorView"
         android:layout_width="match_parent"
@@ -154,7 +205,7 @@
         android:layout_marginTop="48dp"
         android:adjustViewBounds="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:photo_src="@drawable/got_s" />
+        app:photo_src="@drawable/transparent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/filter_Check"

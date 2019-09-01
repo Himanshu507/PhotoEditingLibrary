@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -27,6 +28,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.himanshu.editlibrary.EditLib.OnPhotoEditorListener;
 import com.himanshu.editlibrary.EditLib.PhotoEditor;
 import com.himanshu.editlibrary.EditLib.PhotoEditorView;
@@ -38,10 +40,13 @@ import com.himanshu.editlibrary.EditingLibrary.base.BaseActivity;
 import com.himanshu.editlibrary.EditingLibrary.filters.FilterListener;
 import com.himanshu.editlibrary.EditingLibrary.filters.FilterViewAdapter;
 import com.himanshu.editlibrary.R;
+import com.himanshu.editlibrary.Utils.Temp_holders;
 import com.himanshu.editlibrary.Utils.image_temp;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditImageActivity extends BaseActivity implements OnPhotoEditorListener,
         View.OnClickListener,
@@ -66,8 +71,10 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private LinearLayoutCompat linearLayout, filtercheck;
     Typeface mTextRobotoTf, mEmojiTypeFace;
     Button imgSave;
-    ImageView text, filter, sticker, tools, set_filter, cancel_filter;
-
+    ImageView text, filter, sticker, tools, set_filter, cancel_filter, gif;
+    TextView angle , scale, x, y;
+    Temp_holders temp_holders;
+    private List<ViewType> addedViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,9 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         setContentView(R.layout.activity_edit_image);
 
         initViews();
+        addedViews = new ArrayList<ViewType>();
+        temp_holders = new Temp_holders();
+        Glide.with(this).asGif().load(R.drawable.skel).into(gif);
 
         mWonderFont = Typeface.createFromAsset(getAssets(), "beyond_wonderland.ttf");
 
@@ -109,11 +119,20 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         mPhotoEditor.setOnPhotoEditorListener(this);
 
         //Set Image Dynamically
-        mPhotoEditorView.getSource().setImageBitmap(bitmap);
+        //mPhotoEditorView.getSource().setImageBitmap(bitmap);
         mRvFilters.setVisibility(View.GONE);
     }
 
     private void initViews() {
+
+        gif = findViewById(R.id.gif);
+
+        scale = findViewById(R.id.scale);
+        angle = findViewById(R.id.angle);
+        x = findViewById(R.id.x);
+        y = findViewById(R.id.y);
+
+
 
         filtercheck = findViewById(R.id.filter_Check);
         mPhotoEditorView = findViewById(R.id.photoEditorView);
@@ -156,6 +175,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 styleBuilder.withTextColor(colorCode);
 
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
+
+                scale.setText("Scale = "+ temp_holders.getScale());
+                angle.setText("Angle = "+ temp_holders.getAngle());
+                x.setText("Translate x = "+ temp_holders.getTranslationx());
+                y.setText("Translate y = "+ temp_holders.getTranslationy());
             }
         });
     }
@@ -163,21 +187,41 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     @Override
     public void onAddViewListener(ViewType viewType, int numberOfAddedViews) {
         Log.d(TAG, "onAddViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
+        Log.d("TAG", "View Type = "+ viewType.toString());
+        Log.d("TAG","No of Views = "+ numberOfAddedViews);
+        addedViews.add(viewType);
+        scale.setText("Scale = "+ temp_holders.getScale());
+        angle.setText("Angle = "+ temp_holders.getAngle());
+        x.setText("Translate x = "+ temp_holders.getTranslationx());
+        y.setText("Translate y = "+ temp_holders.getTranslationy());
+        Log.d("TAG","Added ViewType Array = "+addedViews.toString());
     }
 
     @Override
     public void onRemoveViewListener(ViewType viewType, int numberOfAddedViews) {
+        addedViews.remove(viewType);
         Log.d(TAG, "onRemoveViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
+        Log.d("TAG","Added ViewType Array = "+addedViews.toString());
     }
 
     @Override
     public void onStartViewChangeListener(ViewType viewType) {
         Log.d(TAG, "onStartViewChangeListener() called with: viewType = [" + viewType + "]");
+
+        scale.setText("Scale = "+ temp_holders.getScale());
+        angle.setText("Angle = "+ temp_holders.getAngle());
+        x.setText("Translate x = "+ temp_holders.getTranslationx());
+        y.setText("Translate y = "+ temp_holders.getTranslationy());
+
     }
 
     @Override
     public void onStopViewChangeListener(ViewType viewType) {
         Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
+        scale.setText("Scale = "+ temp_holders.getScale());
+        angle.setText("Angle = "+ temp_holders.getAngle());
+        x.setText("Translate x = "+ temp_holders.getTranslationx());
+        y.setText("Translate y = "+ temp_holders.getTranslationy());
     }
 
     @Override
@@ -347,7 +391,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     public void onFilterSelected(PhotoFilter photoFilter) {
         mPhotoEditor.setFilterEffect(photoFilter);
     }
-
 
     void showFilter(boolean isVisible) {
 

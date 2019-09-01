@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "389401232283",
+    "firebase_url": "https://sms-fn.firebaseio.com",
+    "project_id": "sms-fn",
+    "storage_bucket": "sms-fn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389401232283:android:fa1f3f41d3d279d6",
+        "android_client_info": {
+          "package_name": "com.himanshu.editlibrary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389401232283-99pc7hg4tfil69vs5for14t4cu9nn069.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.himanshu.editlibrary",
+            "certificate_hash": "2c359d8c6de5605db489cb84c4e988c26f60eba0"
+          }
+        },
+        {
+          "client_id": "389401232283-lqhh8ml4899e96vlje73001cs9gb01fd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4q0jo4DILLhfCW73pRFETFKFBFrs4_84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389401232283-lqhh8ml4899e96vlje73001cs9gb01fd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
