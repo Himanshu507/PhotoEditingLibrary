@@ -5,11 +5,11 @@
     android:layout_height="wrap_content">
 
     <View
+        android:layout_margin="10dp"
         android:id="@+id/color_picker_view"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
-        android:background="@android:color/white"
         tools:text="" />
 
 </RelativeLayout>

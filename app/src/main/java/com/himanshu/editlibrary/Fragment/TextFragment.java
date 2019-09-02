@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,11 +21,13 @@ import com.himanshu.editlibrary.EditLib.OnPhotoEditorListener;
 import com.himanshu.editlibrary.EditLib.PhotoEditor;
 import com.himanshu.editlibrary.EditLib.PhotoEditorView;
 import com.himanshu.editlibrary.EditLib.PhotoFilter;
+import com.himanshu.editlibrary.EditLib.TextStyleBuilder;
 import com.himanshu.editlibrary.EditLib.ViewType;
 import com.himanshu.editlibrary.EditingLibrary.ColorPickerAdapter;
 import com.himanshu.editlibrary.EditingLibrary.EmojiBSFragment;
 import com.himanshu.editlibrary.EditingLibrary.PropertiesBSFragment;
 import com.himanshu.editlibrary.EditingLibrary.StickerBSFragment;
+import com.himanshu.editlibrary.EditingLibrary.TextEditorDialogFragment;
 import com.himanshu.editlibrary.EditingLibrary.filters.FilterListener;
 import com.himanshu.editlibrary.R;
 
@@ -43,6 +46,7 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
     LinearLayoutCompat linearLayoutCompat;
     ColorPickerAdapter colorPickerAdapter;
 
+    Context context;
 
     public TextFragment() {
         // Required empty public constructor
@@ -67,6 +71,15 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
         initViews(view);
         ButtonWorks();
 
+        context = view.getContext();
+
+        Typeface mEmojiTypeFace = Typeface.createFromAsset(view.getContext().getAssets(), "emojione-android.ttf");
+
+        mPhotoEditor = new PhotoEditor.Builder(view.getContext(), mPhotoEditorView)
+                .setPinchTextScalable(true) // set flag to make text scalable when pinch
+                .setDefaultTextTypeface(mEmojiTypeFace)
+                .build();
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         color_Recycler.setLayoutManager(layoutManager);
         color_Recycler.setHasFixedSize(true);
@@ -75,7 +88,6 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
             @Override
             public void onColorPickerClickListener(int colorCode) {
                 mPhotoEditorView.setBackgroundColor(colorCode);
-
                 color_Recycler.setVisibility(View.GONE);
                 linearLayoutCompat.setVisibility(View.VISIBLE);
 
@@ -85,6 +97,21 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
         return view;
     }
 
+    @Override
+    public void onEditTextChangeListener(final View rootView, String text, int colorCode) {
+        TextEditorDialogFragment textEditorDialogFragment =
+                TextEditorDialogFragment.show((AppCompatActivity) context, text, colorCode);
+        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+            @Override
+            public void onDone(String inputText, int colorCode) {
+                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                styleBuilder.withTextColor(colorCode);
+
+                mPhotoEditor.editText(rootView, inputText, styleBuilder);
+            }
+        });
+    }
+
     private void ButtonWorks() {
         background_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +119,25 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
                 linearLayoutCompat.setVisibility(View.GONE);
                 color_Recycler.setVisibility(View.VISIBLE);
                 color_Recycler.setAdapter(colorPickerAdapter);
+            }
+        });
+
+        text_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openText(view);
+            }
+        });
+    }
+
+    private void openText(View view) {
+        TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show((AppCompatActivity) view.getContext());
+        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+            @Override
+            public void onDone(String inputText, int colorCode) {
+                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                styleBuilder.withTextColor(colorCode);
+                mPhotoEditor.addText(inputText, styleBuilder);
             }
         });
     }
@@ -119,11 +165,6 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
 
     @Override
     public void onClick(View view) {
-
-    }
-
-    @Override
-    public void onEditTextChangeListener(View rootView, String text, int colorCode) {
 
     }
 
