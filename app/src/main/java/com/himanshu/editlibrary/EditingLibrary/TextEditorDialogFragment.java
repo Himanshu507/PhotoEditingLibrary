@@ -6,12 +6,14 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.himanshu.editlibrary.R;
+import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
+import com.himanshu.editlibrary.Utils.AutoFitEditTextUtil;
 
 
 public class TextEditorDialogFragment extends DialogFragment {
@@ -30,16 +34,31 @@ public class TextEditorDialogFragment extends DialogFragment {
     public static final String TAG = TextEditorDialogFragment.class.getSimpleName();
     public static final String EXTRA_INPUT_TEXT = "extra_input_text";
     public static final String EXTRA_COLOR_CODE = "extra_color_code";
-    private EditText mAddTextEditText;
+    private AutoFitEditText mAddTextEditText;
     private ImageView mAddTextDoneTextView;
     private InputMethodManager mInputMethodManager;
     private int mColorCode;
     private TextEditor mTextEditor;
+    RelativeLayout rootviewtext;
 
     public interface TextEditor {
         void onDone(String inputText, int colorCode);
     }
 
+    public void initAutoFitEditText() {
+        mAddTextEditText.setEnabled(true);
+        mAddTextEditText.setFocusableInTouchMode(true);
+        mAddTextEditText.setFocusable(true);
+        mAddTextEditText.setEnableSizeCache(false);
+        //might cause crash on some devices
+        mAddTextEditText.setMovementMethod(null);
+        // can be added after layout inflation;
+        mAddTextEditText.setMaxHeight(250);
+        //don't forget to add min text size programmatically
+        mAddTextEditText.setMinTextSize(10f);
+
+        AutoFitEditTextUtil.setNormalization((AppCompatActivity) getActivity(), rootviewtext, mAddTextEditText);
+    }
 
     //Show dialog with provide text and text color
     public static TextEditorDialogFragment show(@NonNull AppCompatActivity appCompatActivity,
@@ -83,9 +102,10 @@ public class TextEditorDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAddTextEditText = view.findViewById(R.id.add_text_edit_text);
+        rootviewtext = view.findViewById(R.id.rootviewtext);
         mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         mAddTextDoneTextView = view.findViewById(R.id.add_text_done_tv);
-
+        initAutoFitEditText();
         //Setup the color picker for text color
         RecyclerView addTextColorPickerRecyclerView = view.findViewById(R.id.add_text_color_picker_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -115,13 +135,14 @@ public class TextEditorDialogFragment extends DialogFragment {
                 dismiss();
                 String inputText = mAddTextEditText.getText().toString();
                 if (!TextUtils.isEmpty(inputText) && mTextEditor != null) {
-
                     mTextEditor.onDone(inputText, mColorCode);
+                    Log.d("TAG", inputText);
                 }
             }
         });
 
     }
+
 
 
     //Callback to listener if user is done with text editing

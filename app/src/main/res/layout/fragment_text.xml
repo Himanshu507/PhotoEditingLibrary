@@ -52,7 +52,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="2"
-                android:src="@drawable/ic_photo_filter" />
+                app:srcCompat="@drawable/ic_photo_filter" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="2"
-                android:src="@drawable/ic_text" />
+                app:srcCompat="@drawable/ic_text" />
 
             <TextView
                 android:layout_width="40dp"
@@ -105,7 +105,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="2"
-                android:src="@drawable/sticker" />
+                app:srcCompat="@drawable/sticker" />
 
             <TextView
                 android:layout_width="wrap_content"

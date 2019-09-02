@@ -12,7 +12,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="6dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/close"
+        app:srcCompat="@drawable/close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +31,7 @@
         android:layout_height="30dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/flashoff"
+        app:srcCompat="@drawable/flashoff"
         app:layout_constraintBottom_toBottomOf="@+id/camera"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -41,7 +41,7 @@
         android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/change"
+        app:srcCompat="@drawable/change"
         app:layout_constraintBottom_toBottomOf="@+id/camera"
         app:layout_constraintStart_toStartOf="@+id/camera" />
 
@@ -53,7 +53,7 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
-        android:src="@drawable/capture"
+        app:srcCompat="@drawable/capture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/camera" />

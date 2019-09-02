@@ -25,6 +25,8 @@ import androidx.annotation.RequiresPermission;
 import androidx.annotation.UiThread;
 
 import com.himanshu.editlibrary.R;
+import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
+import com.himanshu.editlibrary.TextEdit.AutoFitTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -152,9 +154,11 @@ public class PhotoEditor implements BrushViewChangeListener {
     public void addText(String text, @Nullable TextStyleBuilder styleBuilder) {
         brushDrawingView.setBrushDrawingMode(false);
         final View textRootView = getLayout(ViewType.TEXT);
-        final TextView textInputTv = textRootView.findViewById(R.id.tvPhotoEditorText);
+        final AutoFitTextView textInputTv = textRootView.findViewById(R.id.tvPhotoEditorText);
         final ImageView imgClose = textRootView.findViewById(R.id.imgPhotoEditorClose);
         final FrameLayout frmBorder = textRootView.findViewById(R.id.frmBorder);
+
+        Log.d("TAG", "From PhotoEditor  - "+text);
 
         textInputTv.setText(text);
         if (styleBuilder != null)
@@ -221,7 +225,7 @@ public class PhotoEditor implements BrushViewChangeListener {
      * @param styleBuilder style to apply on {@link TextView}
      */
     public void editText(@NonNull View view, String inputText, @Nullable TextStyleBuilder styleBuilder) {
-        TextView inputTextView = view.findViewById(R.id.tvPhotoEditorText);
+        AutoFitTextView inputTextView = view.findViewById(R.id.tvPhotoEditorText);
         if (inputTextView != null && addedViews.contains(view) && !TextUtils.isEmpty(inputText)) {
             inputTextView.setText(inputText);
             if (styleBuilder != null)

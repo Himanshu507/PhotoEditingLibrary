@@ -154,7 +154,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             public void onDone(String inputText, int colorCode) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
-
+                Log.d("TAG", inputText);
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
             }
         });
@@ -228,6 +228,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(mEmojiTypeFace);
+                Log.d("TAG","From openTextmethod "+inputText);
                 mPhotoEditor.addText(inputText, styleBuilder);
                 linearLayout.setVisibility(View.VISIBLE);
             }
@@ -399,7 +400,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         //permissionManager.checkAndRequestPermissions(this);
         ImageView close, crop, brush, eraser, undo;
         View view = View.inflate(this, R.layout.dialog_tool, null);
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this)
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(view)
                 .show();
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootviewtext"
     android:background="#00ffffff"
     android:orientation="vertical">
 
@@ -15,18 +16,24 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
-        android:src="@drawable/check_vector"
+        app:srcCompat="@drawable/check_vector"
         android:padding="10dp" />
 
-    <EditText
+    <com.himanshu.editlibrary.TextEdit.AutoFitEditText
         android:id="@+id/add_text_edit_text"
         style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/add_text_color_picker_relative_layout"
+        android:hint="Type Here..."
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_below="@+id/add_text_done_tv"
         android:background="@null"
         android:gravity="center"
+        android:textColorHint="#E4E4E4"
+        android:isScrollContainer="false"
+        android:maxLength="200"
         android:inputType="textMultiLine"
         android:textSize="40sp" />
 

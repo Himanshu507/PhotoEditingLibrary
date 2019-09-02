@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
+import com.himanshu.editlibrary.TextEdit.AutoFitTextView;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,7 +95,7 @@ public class TextStyleBuilder {
      *
      * @param textView TextView to apply the style
      */
-    void applyStyle(@NonNull TextView textView) {
+    void applyStyle(@NonNull AutoFitTextView textView) {
         for (Map.Entry<TextStyle, Object> entry : values.entrySet()) {
             switch (entry.getKey()) {
                 case SIZE: {
@@ -142,27 +145,27 @@ public class TextStyleBuilder {
         }
     }
 
-    protected void applyTextSize(TextView textView, float size) {
+    protected void applyTextSize(AutoFitTextView textView, float size) {
         textView.setTextSize(size);
     }
 
-    protected void applyTextColor(TextView textView, int color) {
+    protected void applyTextColor(AutoFitTextView textView, int color) {
         textView.setTextColor(color);
     }
 
-    protected void applyFontFamily(TextView textView, Typeface typeface) {
+    protected void applyFontFamily(AutoFitTextView textView, Typeface typeface) {
         textView.setTypeface(typeface);
     }
 
-    protected void applyGravity(TextView textView, int gravity) {
+    protected void applyGravity(AutoFitTextView textView, int gravity) {
         textView.setGravity(gravity);
     }
 
-    protected void applyBackgroundColor(TextView textView, int color) {
+    protected void applyBackgroundColor(AutoFitTextView textView, int color) {
         textView.setBackgroundColor(color);
     }
 
-    protected void applyBackgroundDrawable(TextView textView, Drawable bg) {
+    protected void applyBackgroundDrawable(AutoFitTextView textView, Drawable bg) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             textView.setBackground(bg);
         } else {
@@ -170,7 +173,7 @@ public class TextStyleBuilder {
         }
     }
 
-    protected void applyTextAppearance(TextView textView, int styleAppearance) {
+    protected void applyTextAppearance(AutoFitTextView textView, int styleAppearance) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             textView.setTextAppearance(styleAppearance);
         } else {

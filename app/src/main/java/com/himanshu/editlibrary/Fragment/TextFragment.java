@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +42,11 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
     private ImageView background_img, text_img, sticker_img;
     private PropertiesBSFragment mPropertiesBSFragment;
     private StickerBSFragment mStickerBSFragment;
-    private Typeface mWonderFont;
     private RecyclerView color_Recycler;
     LinearLayoutCompat linearLayoutCompat;
     ColorPickerAdapter colorPickerAdapter;
-
+    Typeface mEmojiTypeFace;
+    View viwww;
     Context context;
 
     public TextFragment() {
@@ -60,7 +61,7 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+       // openText();
     }
 
     @Override
@@ -73,7 +74,10 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
 
         context = view.getContext();
 
-        Typeface mEmojiTypeFace = Typeface.createFromAsset(view.getContext().getAssets(), "emojione-android.ttf");
+        mStickerBSFragment = new StickerBSFragment();
+        mStickerBSFragment.setStickerListener(this);
+
+        mEmojiTypeFace = Typeface.createFromAsset(view.getContext().getAssets(), "emojione-android.ttf");
 
         mPhotoEditor = new PhotoEditor.Builder(view.getContext(), mPhotoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
@@ -93,32 +97,48 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
 
             }
         });
-
+        viwww = view;
         return view;
     }
 
     @Override
     public void onEditTextChangeListener(final View rootView, String text, int colorCode) {
         TextEditorDialogFragment textEditorDialogFragment =
-                TextEditorDialogFragment.show((AppCompatActivity) context, text, colorCode);
+                TextEditorDialogFragment.show((AppCompatActivity) viwww.getContext(), text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
             public void onDone(String inputText, int colorCode) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
-
+                styleBuilder.withTextFont(mEmojiTypeFace );
+                Log.d("TAG", "From TAGFRAGMENT - "+inputText);
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
             }
         });
     }
 
     private void ButtonWorks() {
+
+        /*mPhotoEditorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openText(view);
+            }
+        });*/
+
         background_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 linearLayoutCompat.setVisibility(View.GONE);
                 color_Recycler.setVisibility(View.VISIBLE);
                 color_Recycler.setAdapter(colorPickerAdapter);
+            }
+        });
+
+        sticker_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStickerBSFragment.show(getFragmentManager() , mStickerBSFragment.getTag());
             }
         });
 
@@ -137,6 +157,8 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
             public void onDone(String inputText, int colorCode) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
+                styleBuilder.withTextFont(mEmojiTypeFace);
+                Log.d("TAG", "From TAGFRAGMENT openText method - "+inputText);
                 mPhotoEditor.addText(inputText, styleBuilder);
             }
         });
@@ -150,7 +172,6 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
         color_Recycler = view.findViewById(R.id.back_recycler);
         linearLayoutCompat = view.findViewById(R.id.linearLayout);
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -205,7 +226,7 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
 
     @Override
     public void onStickerClick(Bitmap bitmap) {
-
+        mPhotoEditor.addImage(bitmap);
     }
 
 }
