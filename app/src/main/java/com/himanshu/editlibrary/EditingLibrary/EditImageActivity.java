@@ -93,8 +93,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         LinearLayoutManager llmFilters = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRvFilters.setLayoutManager(llmFilters);
         mRvFilters.setAdapter(mFilterViewAdapter);
-//        Bitmap bitmap = null;
-//        bitmap = image_temp.getPHOTO();
+        Bitmap bitmap = null;
+        bitmap = image_temp.getPHOTO();
         //image_temp.setPHOTO(null);
 
         mTextRobotoTf = ResourcesCompat.getFont(this, R.font.roboto_medium);
@@ -109,7 +109,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         mPhotoEditor.setOnPhotoEditorListener(this);
 
         //Set Image Dynamically
-        //mPhotoEditorView.getSource().setImageBitmap(bitmap);
+        mPhotoEditorView.getSource().setImageBitmap(bitmap);
         mRvFilters.setVisibility(View.GONE);
     }
 
