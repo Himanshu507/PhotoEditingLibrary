@@ -50,13 +50,6 @@ public class MainCamera extends Fragment {
 
     }
 
-   /* private void init_Views() {
-        capture = findViewById(R.id.capture);
-        swap = findViewById(R.id.switch_camera);
-        flash = findViewById(R.id.flash);
-        cancel = findViewById(R.id.cancel);
-        cameraView = findViewById(R.id.camera);
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
