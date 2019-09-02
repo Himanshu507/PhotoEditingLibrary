@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,6 +32,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * <p>
  * This class in initialize by {@link PhotoEditor.Builder} using a builder pattern with multiple
@@ -41,7 +43,7 @@ import java.util.List;
  * @version 0.1.1
  * @since 18/01/2017
  */
-public class PhotoEditor implements BrushViewChangeListener {
+public class PhotoEditor implements BrushViewChangeListener,TextPositionListener {
 
     private static final String TAG = "PhotoEditor";
     private final LayoutInflater mLayoutInflater;
@@ -53,10 +55,11 @@ public class PhotoEditor implements BrushViewChangeListener {
     private List<View> addedViews;
     private List<View> redoViews;
     private OnPhotoEditorListener mOnPhotoEditorListener;
+    private TextPositionListener textPositionListener;
     private boolean isTextPinchZoomable;
     private Typeface mDefaultTextTypeface;
     private Typeface mDefaultEmojiTypeface;
-
+    private List<ViewPojo> viewInfo = new ArrayList<>();
 
     private PhotoEditor(Builder builder) {
         this.context = builder.context;
@@ -292,6 +295,9 @@ public class PhotoEditor implements BrushViewChangeListener {
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         parentView.addView(rootView, params);
         addedViews.add(rootView);
+        ViewPojo viewPojo =new ViewPojo();
+        viewPojo.setType(viewType.name());
+        viewInfo.add(viewPojo);
         if (mOnPhotoEditorListener != null)
             mOnPhotoEditorListener.onAddViewListener(viewType, addedViews.size());
     }
@@ -308,7 +314,8 @@ public class PhotoEditor implements BrushViewChangeListener {
                 parentView,
                 this.imageView,
                 isTextPinchZoomable,
-                mOnPhotoEditorListener);
+                mOnPhotoEditorListener,
+                this   );
 
         //multiTouchListener.setOnMultiTouchListener(this);
 
@@ -599,6 +606,37 @@ public class PhotoEditor implements BrushViewChangeListener {
      */
     public void setFilterEffect(PhotoFilter filterType) {
         parentView.setFilterEffect(filterType);
+    }
+    public List<ViewPojo> getViewInfo(){
+        return viewInfo;
+    }
+    @Override
+    public void onTextPositionChanged(float x, float y, View view ) {
+        Log.d(TAG, "onTextPositionChanged: X:"+x+" Y:"+y);
+        int position = addedViews.indexOf(view);
+        ViewPojo viewPojo = viewInfo.get(position);
+        viewPojo.setTranslate_x(x);
+        viewPojo.setTranslate_y(y);
+
+
+
+    }
+
+    @Override
+    public void onViewAngleChanged(float rotation, View view) {
+        Log.d(TAG, "onTextPositionChanged: "+rotation);
+        int position = addedViews.indexOf(view);
+        ViewPojo viewPojo = viewInfo.get(position);
+        viewPojo.setAngle(rotation);
+    }
+
+    @Override
+    public void onScaleChanged(float scale, View view) {
+        Log.d(TAG, "onTextPositionChanged: X:"+scale);
+        int position = addedViews.indexOf(view);
+        ViewPojo viewPojo = viewInfo.get(position);
+        viewPojo.setScale(scale);
+
     }
 
     /**

@@ -11,9 +11,14 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
-import com.himanshu.editlibrary.Utils.Temp_holders;
 
 
+/**
+ * Created on 18/01/2017.
+ *
+ * @author <a href="https://github.com/burhanrashid52">Burhanuddin Rashid</a>
+ * <p></p>
+ */
 class MultiTouchListener implements OnTouchListener {
 
     private static final int INVALID_POINTER_ID = -1;
@@ -26,31 +31,28 @@ class MultiTouchListener implements OnTouchListener {
     private int mActivePointerId = INVALID_POINTER_ID;
     private float mPrevX, mPrevY, mPrevRawX, mPrevRawY;
     private ScaleGestureDetector mScaleGestureDetector;
-
+    private static TextPositionListener textPositionListener;
     private int[] location = new int[2];
     private Rect outRect;
     private View deleteView;
     private ImageView photoEditImageView;
-    private RelativeLayout parentView;
+    private static RelativeLayout parentView;
 
     private OnMultiTouchListener onMultiTouchListener;
     private OnGestureControl mOnGestureControl;
     private boolean mIsTextPinchZoomable;
     private OnPhotoEditorListener mOnPhotoEditorListener;
 
-    public static Temp_holders temp_holders ;
-
-
     MultiTouchListener(@Nullable View deleteView, RelativeLayout parentView,
                        ImageView photoEditImageView, boolean isTextPinchZoomable,
-                       OnPhotoEditorListener onPhotoEditorListener) {
-        temp_holders = new Temp_holders();
+                       OnPhotoEditorListener onPhotoEditorListener,TextPositionListener textPositionListener) {
         mIsTextPinchZoomable = isTextPinchZoomable;
         mScaleGestureDetector = new ScaleGestureDetector(new ScaleGestureListener());
         mGestureListener = new GestureDetector(new GestureListener());
         this.deleteView = deleteView;
         this.parentView = parentView;
         this.photoEditImageView = photoEditImageView;
+        this.textPositionListener = textPositionListener;
         this.mOnPhotoEditorListener = onPhotoEditorListener;
         if (deleteView != null) {
             outRect = new Rect(deleteView.getLeft(), deleteView.getTop(),
@@ -66,8 +68,7 @@ class MultiTouchListener implements OnTouchListener {
         } else if (degrees < -180.0f) {
             degrees += 360.0f;
         }
-        Log.d("TAG", "Angle = "+degrees);
-        temp_holders.setAngle(degrees);
+
         return degrees;
     }
 
@@ -77,10 +78,9 @@ class MultiTouchListener implements OnTouchListener {
 
         float scale = view.getScaleX() * info.deltaScale;
         scale = Math.max(info.minimumScale, Math.min(info.maximumScale, scale));
-        Log.d("TAG", "Scale = " + scale );
-        temp_holders.setScale(scale);
         view.setScaleX(scale);
         view.setScaleY(scale);
+        textPositionListener.onScaleChanged(scale,view);
 
         float rotation = adjustAngle(view.getRotation() + info.deltaAngle);
         view.setRotation(rotation);
@@ -91,6 +91,8 @@ class MultiTouchListener implements OnTouchListener {
         view.getMatrix().mapVectors(deltaVector);
         view.setTranslationX(view.getTranslationX() + deltaVector[0]);
         view.setTranslationY(view.getTranslationY() + deltaVector[1]);
+
+        textPositionListener.onTextPositionChanged(parentView.getWidth()/(view.getTranslationX() + deltaVector[0])*2,parentView.getHeight()/(view.getTranslationY() + deltaVector[1])*2,view);
     }
 
     private static void computeRenderOffset(View view, float pivotX, float pivotY) {
@@ -148,7 +150,6 @@ class MultiTouchListener implements OnTouchListener {
                     float currY = event.getY(pointerIndexMove);
                     if (!mScaleGestureDetector.isInProgress()) {
                         adjustTranslation(view, currX - mPrevX, currY - mPrevY);
-
                     }
                 }
                 break;
@@ -229,9 +230,6 @@ class MultiTouchListener implements OnTouchListener {
             info.minimumScale = minimumScale;
             info.maximumScale = maximumScale;
             move(view, info);
-            Log.d("TAG", "x = "+ mPivotX + " , y = "+mPivotY);
-            temp_holders.setTranslationx(mPivotX);
-            temp_holders.setTranslationy(mPivotY);
             return !mIsTextPinchZoomable;
         }
     }
