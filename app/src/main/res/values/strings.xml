@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">EditLibrary</string>
+    <string name="label_brush">Brush</string>
+    <string name="label_emoji">Emoji</string>
+    <string name="label_sticker">Sticker</string>
+    <string name="label_eraser">Eraser</string>
+    <string name="label_text">Text</string>
+    <string name="label_filter">Filter</string>
+    <string name="label_adjust">Adjust</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="photo_editor_emoji">
 
         <!-- Smiles -->
@@ -406,11 +416,4 @@
         <item>u+1f4cd</item>
         <item>u+1f6a9</item>
     </string-array>
-    <string name="label_brush">Brush</string>
-    <string name="label_emoji">Emoji</string>
-    <string name="label_sticker">Sticker</string>
-    <string name="label_eraser">Eraser</string>
-    <string name="label_text">Text</string>
-    <string name="label_filter">Filter</string>
-    <string name="label_adjust">Adjust</string>
 </resources>

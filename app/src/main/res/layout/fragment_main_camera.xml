@@ -4,40 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Fragment.MainCamera">
 
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/main_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tabSelectedTextColor="@color/black">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/cameraitem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camera"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/textitem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
-
-    <!--<ImageView
+    <ImageView
         android:id="@+id/cancel"
         android:layout_width="35dp"
         android:layout_height="35dp"
@@ -100,6 +69,6 @@
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/cancel"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="16dp" />-->
+        tools:layout_editor_absoluteY="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
