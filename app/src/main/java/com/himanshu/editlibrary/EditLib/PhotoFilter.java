@@ -25,4 +25,5 @@ public enum PhotoFilter {
     TEMPERATURE,
     TINT,
     VIGNETTE,
+    OIL,
 }

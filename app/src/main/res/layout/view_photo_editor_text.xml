@@ -18,9 +18,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:maxLength="200"
+            android:padding="10dp"
             android:textSize="18sp"
             tools:text="H"
-            android:background="#000"
+            android:background="@drawable/textview_backgorund"
             tools:textColor="@android:color/white" />
 
     </FrameLayout>

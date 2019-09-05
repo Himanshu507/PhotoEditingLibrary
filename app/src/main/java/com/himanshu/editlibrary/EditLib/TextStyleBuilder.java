@@ -2,6 +2,7 @@ package com.himanshu.editlibrary.EditLib;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -22,7 +23,6 @@ import java.util.Map;
 public class TextStyleBuilder {
 
     private Map<TextStyle, Object> values = new HashMap<>();
-    protected Map<TextStyle, Object> getValues() { return values; }
 
     public void withTextAlpha(@NonNull int value){
         values.put(TextStyle.TEXT_ALPHA, value);
@@ -144,7 +144,7 @@ public class TextStyleBuilder {
                 break;
 
                 case TEXT_ALPHA:{
-                    if (entry.getValue() instanceof Float){
+                    if (entry.getValue() instanceof Integer){
                         final int alpha = (Integer) entry.getValue();
                         applyTextAlpha(textView,alpha);
                     }

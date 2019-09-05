@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -142,6 +143,8 @@ public class TextEditorDialogFragment extends DialogFragment{
                 //mAddTextEditText.setAlpha(alpha_text);
                 alpha_text = i;
                 mAddTextEditText.getBackground().setAlpha(i);
+                GradientDrawable drawable = (GradientDrawable)mAddTextEditText.getBackground();
+                drawable.setAlpha(alpha_text);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {

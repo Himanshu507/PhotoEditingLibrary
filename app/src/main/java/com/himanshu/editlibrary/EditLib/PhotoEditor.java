@@ -25,7 +25,6 @@ import androidx.annotation.RequiresPermission;
 import androidx.annotation.UiThread;
 
 import com.himanshu.editlibrary.R;
-import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
 import com.himanshu.editlibrary.TextEdit.AutoFitTextView;
 
 import java.io.File;
@@ -159,10 +158,11 @@ public class PhotoEditor implements BrushViewChangeListener {
         final FrameLayout frmBorder = textRootView.findViewById(R.id.frmBorder);
 
         Log.d("TAG", "From PhotoEditor  - "+text);
-
         textInputTv.setText(text);
-        if (styleBuilder != null)
+        if (styleBuilder != null) {
             styleBuilder.applyStyle(textInputTv);
+            //textInputTv.getBackground().setAlpha(styleBuilder.getValue());
+        }
 
         MultiTouchListener multiTouchListener = getMultiTouchListener();
         multiTouchListener.setOnGestureControl(new MultiTouchListener.OnGestureControl() {
@@ -330,7 +330,7 @@ public class PhotoEditor implements BrushViewChangeListener {
         switch (viewType) {
             case TEXT:
                 rootView = mLayoutInflater.inflate(R.layout.view_photo_editor_text, null);
-                TextView txtText = rootView.findViewById(R.id.tvPhotoEditorText);
+                AutoFitTextView txtText = rootView.findViewById(R.id.tvPhotoEditorText);
                 if (txtText != null && mDefaultTextTypeface != null) {
                     txtText.setGravity(Gravity.CENTER);
                     if (mDefaultEmojiTypeface != null) {
