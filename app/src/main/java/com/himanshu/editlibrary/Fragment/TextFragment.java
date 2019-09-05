@@ -107,10 +107,11 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
                 TextEditorDialogFragment.show((AppCompatActivity) viwww.getContext(), text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode , float textSize , Typeface font) {
+            public void onDone(String inputText, int colorCode , float textSize , Typeface font, float alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(font);
+                styleBuilder.withTextAlpha(alpha_Text);
                 styleBuilder.withTextSize(textSize);
                 Log.d("TAG", "From TAGFRAGMENT - "+inputText);
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
@@ -155,11 +156,12 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
         TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show((AppCompatActivity) view.getContext());
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode , float textSize , Typeface font) {
+            public void onDone(String inputText, int colorCode , float textSize , Typeface font, float alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(font);
                 styleBuilder.withTextSize(textSize);
+                styleBuilder.withTextAlpha(alpha_Text);
                 Log.d("TAG", "From TAGFRAGMENT openText method - "+inputText);
                 mPhotoEditor.addText(inputText, styleBuilder);
             }

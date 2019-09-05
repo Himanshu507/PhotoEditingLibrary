@@ -27,6 +27,10 @@ public class TextStyleBuilder {
     private Map<TextStyle, Object> values = new HashMap<>();
     protected Map<TextStyle, Object> getValues() { return values; }
 
+    public void withTextAlpha(@NonNull float value){
+        values.put(TextStyle.TEXT_ALPHA, value);
+    }
+
     /**
      * Set this textSize style
      *
@@ -141,8 +145,19 @@ public class TextStyleBuilder {
                     }
                 }
                 break;
+
+                case TEXT_ALPHA:{
+                    if (entry.getValue() instanceof Float){
+                        final float alpha = (Float) entry.getValue();
+                        applyTextAlpha(textView,alpha);
+                    }
+                }
             }
         }
+    }
+
+    private void applyTextAlpha(AutoFitTextView textView, float value){
+        textView.setAlpha(value);
     }
 
     protected void applyTextSize(AutoFitTextView textView, float size) {
@@ -190,7 +205,8 @@ public class TextStyleBuilder {
         GRAVITY("Gravity"),
         FONT_FAMILY("FontFamily"),
         BACKGROUND("Background"),
-        TEXT_APPEARANCE("TextAppearance");
+        TEXT_APPEARANCE("TextAppearance"),
+        TEXT_ALPHA("TextAlpha");
 
         TextStyle(String property) {
             this.property = property;

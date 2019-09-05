@@ -151,11 +151,12 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 TextEditorDialogFragment.show(this, text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode, float textSize, Typeface font) {
+            public void onDone(String inputText, int colorCode, float textSize, Typeface font, float alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(font);
                 styleBuilder.withTextSize(textSize);
+                styleBuilder.withTextAlpha(alpha_Text);
                 Log.d("TAG", inputText);
                 mPhotoEditor.editText(rootView, inputText, styleBuilder);
             }
@@ -226,10 +227,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode, float textSize , Typeface font) {
+            public void onDone(String inputText, int colorCode, float textSize , Typeface font, float alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextSize(textSize);
+                styleBuilder.withTextAlpha(alpha_Text);
                 styleBuilder.withTextFont(font);
                 mPhotoEditor.addText(inputText, styleBuilder);
                 linearLayout.setVisibility(View.VISIBLE);

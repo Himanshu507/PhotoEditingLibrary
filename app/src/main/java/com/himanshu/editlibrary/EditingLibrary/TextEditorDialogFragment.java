@@ -2,6 +2,7 @@ package com.himanshu.editlibrary.EditingLibrary;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -46,11 +49,13 @@ public class TextEditorDialogFragment extends DialogFragment{
     RelativeLayout rootviewtext;
     Spinner size_spinner;
     Context context;
-
+    SeekBar color_opacity;
+    ImageView opacity_img;
+    boolean show_color_opacity = false;
     String[] font_Size = { "Small", "Medium", "Large"};
-
+    float alpha_text = 1f;
     public interface TextEditor {
-        void onDone(String inputText, int colorCode, float textSize, Typeface font);
+        void onDone(String inputText, int colorCode, float textSize, Typeface font, float alpha_Text);
     }
 
     public void initAutoFitEditText() {
@@ -111,7 +116,40 @@ public class TextEditorDialogFragment extends DialogFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        opacity_img = view.findViewById(R.id.opacity_img);
+        opacity_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!show_color_opacity){
+                    color_opacity.setVisibility(View.VISIBLE);
+                    show_color_opacity = true;
+                }else {
+                    color_opacity.setVisibility(View.GONE);
+                    show_color_opacity = false;
+                }
+            }
+        });
+
         mAddTextEditText = view.findViewById(R.id.add_text_edit_text);
+        color_opacity = view.findViewById(R.id.color_opacity);
+
+        color_opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                alpha_text = (float) i / 255;
+                mAddTextEditText.setAlpha(alpha_text);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         size_spinner = view.findViewById(R.id.spinner_text);
         ArrayAdapter aa = new ArrayAdapter(view.getContext(),android.R.layout.simple_spinner_item,font_Size);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -153,8 +191,10 @@ public class TextEditorDialogFragment extends DialogFragment{
             public void onColorPickerClickListener(int colorCode) {
                 mColorCode = colorCode;
                 mAddTextEditText.setTextColor(colorCode);
+                color_opacity.getProgressDrawable().setColorFilter(mColorCode, PorterDuff.Mode.MULTIPLY);
             }
         });
+
         addTextColorPickerRecyclerView.setAdapter(colorPickerAdapter);
         mAddTextEditText.setText(getArguments().getString(EXTRA_INPUT_TEXT));
         mColorCode = getArguments().getInt(EXTRA_COLOR_CODE);
@@ -170,7 +210,7 @@ public class TextEditorDialogFragment extends DialogFragment{
                 dismiss();
                 String inputText = mAddTextEditText.getText().toString();
                 if (!TextUtils.isEmpty(inputText) && mTextEditor != null) {
-                    mTextEditor.onDone(inputText, mColorCode, mAddTextEditText.getTextSize(), mAddTextEditText.getTypeface());
+                    mTextEditor.onDone(inputText, mColorCode, mAddTextEditText.getTextSize(), mAddTextEditText.getTypeface(), alpha_text);
                     Log.d("TAG", inputText);
                 }
             }
