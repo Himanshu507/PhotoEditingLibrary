@@ -231,7 +231,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextSize(textSize);
                 styleBuilder.withTextFont(font);
-                Log.d("TAG","From openTextmethod "+inputText);
                 mPhotoEditor.addText(inputText, styleBuilder);
                 linearLayout.setVisibility(View.VISIBLE);
             }
