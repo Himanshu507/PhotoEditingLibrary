@@ -151,7 +151,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 TextEditorDialogFragment.show(this, text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode, float textSize, Typeface font, float alpha_Text) {
+            public void onDone(String inputText, int colorCode, float textSize, Typeface font, int alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(font);
@@ -227,7 +227,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode, float textSize , Typeface font, float alpha_Text) {
+            public void onDone(String inputText, int colorCode, float textSize , Typeface font, int alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextSize(textSize);

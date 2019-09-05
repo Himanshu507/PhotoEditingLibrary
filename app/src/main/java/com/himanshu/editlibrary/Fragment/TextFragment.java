@@ -107,7 +107,7 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
                 TextEditorDialogFragment.show((AppCompatActivity) viwww.getContext(), text, colorCode);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode , float textSize , Typeface font, float alpha_Text) {
+            public void onDone(String inputText, int colorCode , float textSize , Typeface font, int alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(font);
@@ -156,7 +156,7 @@ public class TextFragment extends Fragment implements OnPhotoEditorListener,
         TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show((AppCompatActivity) view.getContext());
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode , float textSize , Typeface font, float alpha_Text) {
+            public void onDone(String inputText, int colorCode , float textSize , Typeface font, int alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextFont(font);

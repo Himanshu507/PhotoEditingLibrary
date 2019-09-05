@@ -20,7 +20,8 @@
             android:maxLength="200"
             android:textSize="18sp"
             tools:text="H"
-            tools:textColor="@android:color/black" />
+            android:background="#000"
+            tools:textColor="@android:color/white" />
 
     </FrameLayout>
 

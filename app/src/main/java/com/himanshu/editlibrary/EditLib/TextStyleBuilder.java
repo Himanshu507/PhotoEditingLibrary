@@ -4,11 +4,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 
-import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
 import com.himanshu.editlibrary.TextEdit.AutoFitTextView;
 
 import java.util.HashMap;
@@ -27,7 +24,7 @@ public class TextStyleBuilder {
     private Map<TextStyle, Object> values = new HashMap<>();
     protected Map<TextStyle, Object> getValues() { return values; }
 
-    public void withTextAlpha(@NonNull float value){
+    public void withTextAlpha(@NonNull int value){
         values.put(TextStyle.TEXT_ALPHA, value);
     }
 
@@ -148,7 +145,7 @@ public class TextStyleBuilder {
 
                 case TEXT_ALPHA:{
                     if (entry.getValue() instanceof Float){
-                        final float alpha = (Float) entry.getValue();
+                        final int alpha = (Integer) entry.getValue();
                         applyTextAlpha(textView,alpha);
                     }
                 }
@@ -156,8 +153,8 @@ public class TextStyleBuilder {
         }
     }
 
-    private void applyTextAlpha(AutoFitTextView textView, float value){
-        textView.setAlpha(value);
+    private void applyTextAlpha(AutoFitTextView textView, int value){
+        textView.getBackground().setAlpha(value);
     }
 
     protected void applyTextSize(AutoFitTextView textView, float size) {

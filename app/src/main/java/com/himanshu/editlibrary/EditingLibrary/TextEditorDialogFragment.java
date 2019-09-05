@@ -31,6 +31,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.himanshu.editlibrary.MainActivity;
 import com.himanshu.editlibrary.R;
 import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
 import com.himanshu.editlibrary.Utils.AutoFitEditTextUtil;
@@ -53,9 +54,9 @@ public class TextEditorDialogFragment extends DialogFragment{
     ImageView opacity_img;
     boolean show_color_opacity = false;
     String[] font_Size = { "Small", "Medium", "Large"};
-    float alpha_text = 1f;
+    int alpha_text = 1;
     public interface TextEditor {
-        void onDone(String inputText, int colorCode, float textSize, Typeface font, float alpha_Text);
+        void onDone(String inputText, int colorCode, float textSize, Typeface font, int alpha_Text);
     }
 
     public void initAutoFitEditText() {
@@ -137,8 +138,10 @@ public class TextEditorDialogFragment extends DialogFragment{
         color_opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                alpha_text = (float) i / 255;
-                mAddTextEditText.setAlpha(alpha_text);
+                //alpha_text = (float) i / 255;
+                //mAddTextEditText.setAlpha(alpha_text);
+                alpha_text = i;
+                mAddTextEditText.getBackground().setAlpha(i);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -199,7 +202,7 @@ public class TextEditorDialogFragment extends DialogFragment{
         mAddTextEditText.setText(getArguments().getString(EXTRA_INPUT_TEXT));
         mColorCode = getArguments().getInt(EXTRA_COLOR_CODE);
         mAddTextEditText.setTextColor(mColorCode);
-        mAddTextEditText.setTypeface(Typeface.createFromAsset(this.getActivity().getAssets(),"vacation.ttf"));
+        mAddTextEditText.setTypeface(Typeface.createFromAsset(this.getActivity().getAssets(),"permanentmarker.ttf"));
         mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         //Make a callback on activity when user is done with text editing

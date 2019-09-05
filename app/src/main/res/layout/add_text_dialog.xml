@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/textsize_img"
         android:src="@drawable/text_size"
-        android:layout_margin="20dp"
+        android:layout_margin="12dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_width="40dp"
@@ -19,7 +19,7 @@
 
     <Spinner
         android:id="@+id/spinner_text"
-        android:layout_margin="20dp"
+        android:layout_margin="12dp"
         android:backgroundTint="@color/white"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -29,7 +29,7 @@
     <ImageView
         android:id="@+id/opacity_img"
         android:src="@drawable/opacity"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:layout_centerHorizontal="true"
         android:layout_width="40dp"
         android:layout_height="40dp"/>
@@ -42,8 +42,8 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:max="255"
         android:layout_centerHorizontal="true"
-        android:progress="70"
-        android:layout_marginTop="72dp"
+        android:progress="10"
+        android:layout_marginTop="60dp"
         android:indeterminate="false"
         />
 
@@ -54,22 +54,24 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
+        android:layout_margin="4dp"
         app:srcCompat="@drawable/check_vector"
         android:padding="10dp" />
 
     <com.himanshu.editlibrary.TextEdit.AutoFitEditText
         android:id="@+id/add_text_edit_text"
         style="@style/EditText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/add_text_color_picker_relative_layout"
         android:hint="Type Here..."
         android:focusable="true"
+        android:layout_centerInParent="true"
         android:focusableInTouchMode="true"
         android:layout_below="@+id/add_text_done_tv"
-        android:background="@null"
+        android:background="#000000"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:textColorHint="#E4E4E4"
         android:isScrollContainer="false"
         android:maxLength="200"
