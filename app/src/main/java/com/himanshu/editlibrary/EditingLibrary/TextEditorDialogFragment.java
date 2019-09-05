@@ -11,9 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -29,7 +33,7 @@ import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
 import com.himanshu.editlibrary.Utils.AutoFitEditTextUtil;
 
 
-public class TextEditorDialogFragment extends DialogFragment {
+public class TextEditorDialogFragment extends DialogFragment{
 
     public static final String TAG = TextEditorDialogFragment.class.getSimpleName();
     public static final String EXTRA_INPUT_TEXT = "extra_input_text";
@@ -40,9 +44,13 @@ public class TextEditorDialogFragment extends DialogFragment {
     private int mColorCode;
     private TextEditor mTextEditor;
     RelativeLayout rootviewtext;
+    Spinner size_spinner;
+    Context context;
+
+    String[] font_Size = { "Small", "Medium", "Large"};
 
     public interface TextEditor {
-        void onDone(String inputText, int colorCode);
+        void onDone(String inputText, int colorCode, float textSize, Typeface font);
     }
 
     public void initAutoFitEditText() {
@@ -95,13 +103,40 @@ public class TextEditorDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.add_text_dialog, container, false);
+        View view = inflater.inflate(R.layout.add_text_dialog, container, false);
+        context = view.getContext();
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAddTextEditText = view.findViewById(R.id.add_text_edit_text);
+        size_spinner = view.findViewById(R.id.spinner_text);
+        ArrayAdapter aa = new ArrayAdapter(view.getContext(),android.R.layout.simple_spinner_item,font_Size);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        size_spinner.setAdapter(aa);
+
+        size_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0)
+                    mAddTextEditText.setTextSize(40f);
+                if (i == 1)
+                    mAddTextEditText.setTextSize(60f);
+                if (i == 2)
+                    mAddTextEditText.setTextSize(90f);
+
+                Toast.makeText(context,font_Size[i],Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //Toast.makeText(context,font_Size[i],Toast.LENGTH_SHORT).show();
+                mAddTextEditText.setTextSize(60f);
+            }
+        });
         rootviewtext = view.findViewById(R.id.rootviewtext);
         mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         mAddTextDoneTextView = view.findViewById(R.id.add_text_done_tv);
@@ -124,7 +159,7 @@ public class TextEditorDialogFragment extends DialogFragment {
         mAddTextEditText.setText(getArguments().getString(EXTRA_INPUT_TEXT));
         mColorCode = getArguments().getInt(EXTRA_COLOR_CODE);
         mAddTextEditText.setTextColor(mColorCode);
-        mAddTextEditText.setTypeface(Typeface.createFromAsset(this.getActivity().getAssets(),"pacifico.ttf"));
+        mAddTextEditText.setTypeface(Typeface.createFromAsset(this.getActivity().getAssets(),"vacation.ttf"));
         mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         //Make a callback on activity when user is done with text editing
@@ -135,13 +170,14 @@ public class TextEditorDialogFragment extends DialogFragment {
                 dismiss();
                 String inputText = mAddTextEditText.getText().toString();
                 if (!TextUtils.isEmpty(inputText) && mTextEditor != null) {
-                    mTextEditor.onDone(inputText, mColorCode);
+                    mTextEditor.onDone(inputText, mColorCode, mAddTextEditText.getTextSize(), mAddTextEditText.getTypeface());
                     Log.d("TAG", inputText);
                 }
             }
         });
 
     }
+
 
 
 
