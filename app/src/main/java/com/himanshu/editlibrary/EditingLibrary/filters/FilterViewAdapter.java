@@ -107,6 +107,5 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
         mPairList.add(new Pair<>("filters/flip_horizental.png", PhotoFilter.FLIP_HORIZONTAL));
         mPairList.add(new Pair<>("filters/flip_vertical.png", PhotoFilter.FLIP_VERTICAL));
         mPairList.add(new Pair<>("filters/rotate.png", PhotoFilter.ROTATE));
-        mPairList.add(new Pair<>("filters/oil.jpg", PhotoFilter.OIL));
     }
 }

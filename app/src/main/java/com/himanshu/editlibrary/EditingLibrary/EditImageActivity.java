@@ -5,10 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
@@ -17,6 +20,9 @@ import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -37,7 +43,9 @@ import com.himanshu.editlibrary.EditLib.ViewType;
 import com.himanshu.editlibrary.EditingLibrary.base.BaseActivity;
 import com.himanshu.editlibrary.EditingLibrary.filters.FilterListener;
 import com.himanshu.editlibrary.EditingLibrary.filters.FilterViewAdapter;
+import com.himanshu.editlibrary.Oil.olfilter;
 import com.himanshu.editlibrary.R;
+import com.himanshu.editlibrary.Utils.AndroidUtils;
 import com.himanshu.editlibrary.Utils.image_temp;
 
 import java.io.File;
@@ -66,7 +74,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private LinearLayoutCompat linearLayout, filtercheck;
     Typeface mTextRobotoTf, mEmojiTypeFace;
     Button imgSave;
-    ImageView text, filter, sticker, tools, set_filter, cancel_filter;
+    ImageView text, filter, sticker, tools, set_filter, cancel_filter, oil_filter_img;
+    TextView text_oil ;
 
 
     @Override
@@ -111,9 +120,17 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         //Set Image Dynamically
         mPhotoEditorView.getSource().setImageBitmap(bitmap);
         mRvFilters.setVisibility(View.GONE);
+        oil_filter_img.setVisibility(View.GONE);
+        text_oil.setVisibility(View.GONE);
     }
 
     private void initViews() {
+
+        oil_filter_img = findViewById(R.id.oil_filter_img);
+        oil_filter_img.setOnClickListener(this);
+
+        text_oil = findViewById(R.id.oil_text);
+
 
         filtercheck = findViewById(R.id.filter_Check);
         mPhotoEditorView = findViewById(R.id.photoEditorView);
@@ -197,6 +214,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
                 break;
             case R.id.filter_img:
+                oil_filter_img.setVisibility(View.VISIBLE);
+                text_oil.setVisibility(View.VISIBLE);
                 filtercheck.setVisibility(View.VISIBLE);
                 imgSave.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.GONE);
@@ -207,10 +226,16 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 galleryOrCameraDialog();
                 break;
 
+            case R.id.oil_filter_img:
+                oilFilter(image_temp.getPHOTO());
+                break;
+
             case R.id.clearfilter:
                 mPhotoEditorView.getSource().setImageBitmap(image_temp.getPHOTO());
                 filtercheck.setVisibility(View.GONE);
                 mRvFilters.setVisibility(View.GONE);
+                oil_filter_img.setVisibility(View.GONE);
+                text_oil.setVisibility(View.GONE);
                 showFilter(false);
                 linearLayout.setVisibility(View.VISIBLE);
                 imgSave.setVisibility(View.VISIBLE);
@@ -385,6 +410,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         if (mIsFilterVisible) {
             filtercheck.setVisibility(View.GONE);
             mRvFilters.setVisibility(View.GONE);
+            oil_filter_img.setVisibility(View.GONE);
+            text_oil.setVisibility(View.GONE);
             imgSave.setVisibility(View.VISIBLE);
             linearLayout.setVisibility(View.VISIBLE);
         } else if (!mPhotoEditor.isCacheEmpty()) {
@@ -454,4 +481,33 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             }
         });
     }
+
+    public void oilFilter(final Bitmap bitmap){
+        Toast.makeText(getApplicationContext(),"OilFilter clicked",Toast.LENGTH_SHORT).show();
+        Thread thread = new Thread(){
+            public void run() {
+                final int width = bitmap.getWidth();
+                    final int height = bitmap.getHeight();
+                    final int[] colors = AndroidUtils.bitmapToIntArray(bitmap);
+                    final Rect rect = new Rect(0, 0, width, height);
+                    final olfilter filter = new olfilter();
+
+                    final int[] newImage = filter.filterPixels(width,height,colors,rect);
+                    final Bitmap bitmapp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                    // vector is your int[] of ARGB
+
+                    bitmapp.setPixels(newImage, 0, width, 0, 0, width, height);
+
+                    EditImageActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPhotoEditorView.getSource().setImageBitmap(bitmapp);
+                        }
+                    });
+            }
+        };
+        thread.setDaemon(true);
+        thread.start();
+    }
+
 }

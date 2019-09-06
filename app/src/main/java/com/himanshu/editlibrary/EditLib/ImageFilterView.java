@@ -3,6 +3,7 @@ package com.himanshu.editlibrary.EditLib;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.media.effect.Effect;
 import android.media.effect.EffectContext;
 import android.media.effect.EffectFactory;
@@ -13,6 +14,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import com.himanshu.editlibrary.Oil.olfilter;
+import com.himanshu.editlibrary.Utils.AndroidUtils;
 
 import java.util.Map;
 
@@ -21,6 +27,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import static android.media.effect.EffectFactory.*;
 import static com.himanshu.editlibrary.EditLib.PhotoFilter.NONE;
+import static com.himanshu.editlibrary.EditLib.PhotoFilter.OIL;
 
 /**
  * <p>
