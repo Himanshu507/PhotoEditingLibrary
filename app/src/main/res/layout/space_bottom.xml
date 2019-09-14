@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Choose Width of Upper Text Space"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bckground"
+        android:text="Minimum"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/normal"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+
+    <TextView
+        android:id="@+id/normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bckground"
+        android:text="Normal"
+        android:textColor="@color/black"
+        android:padding="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/max"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/min"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+
+    <TextView
+        android:id="@+id/max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bckground"
+        android:text="Maximum"
+        android:textColor="@color/black"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/normal"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+
+
+    <Button
+        android:id="@+id/bottom"
+        android:background="@drawable/btn_bckground"
+        android:layout_marginTop="20dp"
+        android:layout_margin="20dp"
+        android:text="Show Bottom Space"
+        android:textColor="@color/black"
+        android:fontFamily="@string/bottom_sheet_behavior"
+        app:layout_constraintTop_toBottomOf="@+id/max"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

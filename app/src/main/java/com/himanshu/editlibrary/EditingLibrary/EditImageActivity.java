@@ -16,11 +16,16 @@ import android.provider.MediaStore;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +60,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         View.OnClickListener,
         PropertiesBSFragment.Properties,
         StickerBSFragment.StickerListener,
-        FilterListener {
+        FilterListener,Space_bottom.BottomSheetListener {
 
     private static final String TAG = EditImageActivity.class.getSimpleName();
     private static final int CAMERA_REQUEST = 52;
@@ -74,9 +79,10 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private LinearLayoutCompat linearLayout, filtercheck;
     Typeface mTextRobotoTf, mEmojiTypeFace;
     Button imgSave;
-    ImageView text, filter, sticker, tools, set_filter, cancel_filter, oil_filter_img;
-    TextView text_oil ;
-
+    ImageView text, filter, sticker, tools, set_filter, cancel_filter, oil_filter_img, Space;
+    TextView text_oil;
+    View upperview, lowerview;
+    Boolean upperbool = false, lowerbool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +132,13 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
     private void initViews() {
 
+        upperview = findViewById(R.id.upperview);
+        lowerview = findViewById(R.id.bottomView);
+
+
+        Space  = findViewById(R.id.Space);
+        Space.setOnClickListener(this);
+
         oil_filter_img = findViewById(R.id.oil_filter_img);
         oil_filter_img.setOnClickListener(this);
 
@@ -134,6 +147,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         filtercheck = findViewById(R.id.filter_Check);
         mPhotoEditorView = findViewById(R.id.photoEditorView);
+
         mRvFilters = findViewById(R.id.rvFilterView);
         mRootView = findViewById(R.id.rootView);
 
@@ -243,6 +257,12 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
             case R.id.setFilter:
                 onBackPressed();
+                break;
+
+            case R.id.Space:
+                upperview.setVisibility(View.VISIBLE);
+                Space_bottom bottomSheet = new Space_bottom();
+                bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
                 break;
         }
     }
@@ -510,4 +530,18 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         thread.start();
     }
 
+    @Override
+    public void set_height(int heigh) {
+        Display display = getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        ViewGroup.LayoutParams layoutParams = upperview.getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = heigh;
+        upperview.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void show_bottomSpace() {
+        lowerview.setVisibility(View.VISIBLE);
+    }
 }

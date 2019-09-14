@@ -36,4 +36,5 @@
     <color name="ripple">#477064</color>
     <color name="puc_color">#ef5350</color>
     <color name="puc_chat">#2196f3</color>
+    <color name="background">#D3D0D0</color>
 </resources>
