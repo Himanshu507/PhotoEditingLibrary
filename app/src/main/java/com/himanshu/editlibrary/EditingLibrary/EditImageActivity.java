@@ -2,6 +2,8 @@ package com.himanshu.editlibrary.EditingLibrary;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -52,19 +54,25 @@ import com.himanshu.editlibrary.Oil.olfilter;
 import com.himanshu.editlibrary.R;
 import com.himanshu.editlibrary.Utils.AndroidUtils;
 import com.himanshu.editlibrary.Utils.image_temp;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+
+import static java.security.AccessController.getContext;
 
 public class EditImageActivity extends BaseActivity implements OnPhotoEditorListener,
         View.OnClickListener,
         PropertiesBSFragment.Properties,
         StickerBSFragment.StickerListener,
-        FilterListener,Space_bottom.BottomSheetListener {
+        FilterListener, Space_bottom.BottomSheetListener {
 
     private static final String TAG = EditImageActivity.class.getSimpleName();
     private static final int CAMERA_REQUEST = 52;
     private static final int PICK_REQUEST = 53;
+    private static final int CROP_REQUEST = 54;
     private PhotoEditor mPhotoEditor;
     private PhotoEditorView mPhotoEditorView;
     private PropertiesBSFragment mPropertiesBSFragment;
@@ -83,6 +91,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     TextView text_oil;
     View upperview, lowerview;
     Boolean upperbool = false, lowerbool = false;
+    Intent CropIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +145,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         lowerview = findViewById(R.id.bottomView);
 
 
-        Space  = findViewById(R.id.Space);
+        Space = findViewById(R.id.Space);
         Space.setOnClickListener(this);
 
         oil_filter_img = findViewById(R.id.oil_filter_img);
@@ -272,7 +281,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
         textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
             @Override
-            public void onDone(String inputText, int colorCode, float textSize , Typeface font, int alpha_Text) {
+            public void onDone(String inputText, int colorCode, float textSize, Typeface font, int alpha_Text) {
                 final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                 styleBuilder.withTextColor(colorCode);
                 styleBuilder.withTextSize(textSize);
@@ -331,6 +340,17 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
                     mPhotoEditorView.getSource().setImageBitmap(photo);
                     break;
+               /* case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                    Uri resultUri = result.getUri();
+                    Bitmap bitmapp = null;
+                    try {
+                        bitmapp = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    mPhotoEditorView.getSource().setImageBitmap(bitmapp);
+                    break;*/
                 case PICK_REQUEST:
                     try {
                         mPhotoEditor.clearAllViews();
@@ -341,6 +361,22 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         e.printStackTrace();
                     }
                     break;
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Bitmap bitmapp = null;
+                try {
+                    bitmapp = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mPhotoEditorView.getSource().setImageBitmap(bitmapp);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -471,7 +507,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         crop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                CropImage();
                 alertDialog.dismiss();
             }
         });
@@ -502,28 +538,35 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         });
     }
 
-    public void oilFilter(final Bitmap bitmap){
-        Toast.makeText(getApplicationContext(),"OilFilter clicked",Toast.LENGTH_SHORT).show();
-        Thread thread = new Thread(){
+    private void CropImage() {
+        // start cropping activity for pre-acquired image saved on the device
+        CropImage.activity(getImageUri(getApplicationContext(),image_temp.getPHOTO()))
+                .start(this);
+
+    }
+
+    public void oilFilter(final Bitmap bitmap) {
+        Toast.makeText(getApplicationContext(), "OilFilter clicked", Toast.LENGTH_SHORT).show();
+        Thread thread = new Thread() {
             public void run() {
                 final int width = bitmap.getWidth();
-                    final int height = bitmap.getHeight();
-                    final int[] colors = AndroidUtils.bitmapToIntArray(bitmap);
-                    final Rect rect = new Rect(0, 0, width, height);
-                    final olfilter filter = new olfilter();
+                final int height = bitmap.getHeight();
+                final int[] colors = AndroidUtils.bitmapToIntArray(bitmap);
+                final Rect rect = new Rect(0, 0, width, height);
+                final olfilter filter = new olfilter();
 
-                    final int[] newImage = filter.filterPixels(width,height,colors,rect);
-                    final Bitmap bitmapp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-                    // vector is your int[] of ARGB
+                final int[] newImage = filter.filterPixels(width, height, colors, rect);
+                final Bitmap bitmapp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                // vector is your int[] of ARGB
 
-                    bitmapp.setPixels(newImage, 0, width, 0, 0, width, height);
+                bitmapp.setPixels(newImage, 0, width, 0, 0, width, height);
 
-                    EditImageActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mPhotoEditorView.getSource().setImageBitmap(bitmapp);
-                        }
-                    });
+                EditImageActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPhotoEditorView.getSource().setImageBitmap(bitmapp);
+                    }
+                });
             }
         };
         thread.setDaemon(true);
@@ -544,4 +587,13 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     public void show_bottomSpace() {
         lowerview.setVisibility(View.VISIBLE);
     }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
 }

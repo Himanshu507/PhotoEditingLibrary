@@ -70,7 +70,6 @@
         android:layout_centerInParent="true"
         android:focusableInTouchMode="true"
         android:layout_below="@+id/add_text_done_tv"
-        android:background="@drawable/textview_backgorund"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:textColorHint="#E4E4E4"
@@ -79,7 +78,7 @@
         android:inputType="textMultiLine"
         android:textSize="40sp" />
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/font_relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,21 +92,56 @@
             tools:background="@android:color/black"
             tools:listitem="@layout/color_picker_item_list" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/add_text_color_picker_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignBottom="@+id/text_menu"
+        android:layout_marginBottom="50dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/add_text_color_picker_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             tools:background="@android:color/black"
             tools:listitem="@layout/color_picker_item_list" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/text_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/color_img"
+            android:src="@drawable/plate_paint"
+            android:layout_width="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="32dp"/>
+
+        <ImageView
+            android:id="@+id/font_img"
+            android:src="@drawable/font"
+            android:layout_width="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:layout_height="32dp"/>
+
+        <ImageView
+            android:id="@+id/font_size_img"
+            android:src="@drawable/text_size"
+            android:layout_width="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="32dp"/>
 
     </RelativeLayout>
 
