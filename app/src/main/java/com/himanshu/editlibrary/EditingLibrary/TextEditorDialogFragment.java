@@ -15,9 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -32,7 +30,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.himanshu.editlibrary.MainActivity;
 import com.himanshu.editlibrary.R;
 import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
 import com.himanshu.editlibrary.Utils.AutoFitEditTextUtil;
@@ -48,11 +45,11 @@ public class TextEditorDialogFragment extends DialogFragment{
     private InputMethodManager mInputMethodManager;
     private int mColorCode;
     private TextEditor mTextEditor;
-    RelativeLayout rootviewtext;
-    Spinner size_spinner;
+    RelativeLayout rootviewtext, font_size_relative_layout,font_picker_relative_layout,add_text_color_picker_relative_layout ;
+    //Spinner size_spinner;
     Context context;
     SeekBar color_opacity;
-    ImageView opacity_img;
+    ImageView opacity_img, color_img, font_img, font_size_img, textsize_img;
     boolean show_color_opacity = false;
     String[] font_Size = { "Small", "Medium", "Large"};
     int alpha_text = 1;
@@ -135,7 +132,6 @@ public class TextEditorDialogFragment extends DialogFragment{
 
         mAddTextEditText = view.findViewById(R.id.add_text_edit_text);
         color_opacity = view.findViewById(R.id.color_opacity);
-
         color_opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -156,7 +152,7 @@ public class TextEditorDialogFragment extends DialogFragment{
             }
         });
 
-        size_spinner = view.findViewById(R.id.spinner_text);
+        /*size_spinner = view.findViewById(R.id.spinner_text);
         ArrayAdapter aa = new ArrayAdapter(view.getContext(),android.R.layout.simple_spinner_item,font_Size);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
@@ -171,16 +167,58 @@ public class TextEditorDialogFragment extends DialogFragment{
                     mAddTextEditText.setTextSize(60f);
                 if (i == 2)
                     mAddTextEditText.setTextSize(90f);
-
                 Toast.makeText(context,font_Size[i],Toast.LENGTH_SHORT).show();
             }
-
-            @Override
+*/
+           /* @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //Toast.makeText(context,font_Size[i],Toast.LENGTH_SHORT).show();
                 mAddTextEditText.setTextSize(60f);
             }
+        });*/
+        //Relative Layout
+
+        add_text_color_picker_relative_layout = view.findViewById(R.id.add_text_color_picker_relative_layout);
+        font_picker_relative_layout = view.findViewById(R.id.font_picker_relative_layout);
+        font_size_relative_layout = view.findViewById(R.id.font_size_relative_layout);
+
+        //Text Menu images
+        color_img = view.findViewById(R.id.color_img);
+        font_img = view.findViewById(R.id.font_img);
+        font_size_img = view.findViewById(R.id.font_size_img);
+
+        color_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_text_color_picker_relative_layout.setVisibility(View.VISIBLE);
+                font_picker_relative_layout.setVisibility(View.GONE);
+                font_size_relative_layout.setVisibility(View.GONE);
+                textsize_img.setVisibility(View.VISIBLE);
+            }
         });
+
+        font_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_text_color_picker_relative_layout.setVisibility(View.GONE);
+                font_picker_relative_layout.setVisibility(View.VISIBLE);
+                font_size_relative_layout.setVisibility(View.GONE);
+                textsize_img.setVisibility(View.VISIBLE);
+            }
+        });
+
+        font_size_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_text_color_picker_relative_layout.setVisibility(View.GONE);
+                font_picker_relative_layout.setVisibility(View.GONE);
+                font_size_relative_layout.setVisibility(View.VISIBLE);
+                textsize_img.setVisibility(View.VISIBLE);
+            }
+        });
+
+        textsize_img = view.findViewById(R.id.textsize_img);
+
         rootviewtext = view.findViewById(R.id.rootviewtext);
         mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         mAddTextDoneTextView = view.findViewById(R.id.add_text_done_tv);
@@ -201,7 +239,44 @@ public class TextEditorDialogFragment extends DialogFragment{
             }
         });
 
+        RecyclerView addFontRecycler = view.findViewById(R.id.font_picker_recycler_view);
+        FontPickerAdapter fontPickerAdapter = new FontPickerAdapter(getActivity());
+        LinearLayoutManager layoutManagerr = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        fontPickerAdapter.setOnColorPickerClickListener(new FontPickerAdapter.FontPickerClickListener() {
+            @Override
+            public void onColorPickerClickListener(Typeface colorCode) {
+                mAddTextEditText.setTypeface(colorCode);
+            }
+        });
+
         addTextColorPickerRecyclerView.setAdapter(colorPickerAdapter);
+        addFontRecycler.setLayoutManager(layoutManagerr);
+        addFontRecycler.setHasFixedSize(true);
+        addFontRecycler.setAdapter(fontPickerAdapter);
+
+        final RecyclerView font_size_recycler_view = view.findViewById(R.id.font_size_recycler_view);
+        LinearLayoutManager layoutManage = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        FontSizePickerAdapter fontSizePickerAdapter = new FontSizePickerAdapter(getActivity());
+        fontSizePickerAdapter.setOnColorPickerClickListener(new FontSizePickerAdapter.FontSizePickerClickListener() {
+            @Override
+            public void onColorPickerClickListener(Float colorCode) {
+                mAddTextEditText.setTextSize(colorCode);
+            }
+        });
+         font_size_recycler_view.setLayoutManager(layoutManage);
+         font_size_recycler_view.setHasFixedSize(true);
+         font_size_recycler_view.setAdapter(fontSizePickerAdapter);
+
+        textsize_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_text_color_picker_relative_layout.setVisibility(View.GONE);
+                font_picker_relative_layout.setVisibility(View.GONE);
+                font_size_relative_layout.setVisibility(View.GONE);
+                textsize_img.setVisibility(View.GONE);
+            }
+        });
+
         mAddTextEditText.setText(getArguments().getString(EXTRA_INPUT_TEXT));
         mColorCode = getArguments().getInt(EXTRA_COLOR_CODE);
         mAddTextEditText.setTextColor(mColorCode);
