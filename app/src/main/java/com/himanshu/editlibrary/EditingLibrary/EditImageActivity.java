@@ -596,4 +596,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     }
 
 
+    public void mukul(){
+        Toast.makeText(getApplicationContext(),"Mukul function is called",Toast.LENGTH_SHORT).show();
+    }
+
 }

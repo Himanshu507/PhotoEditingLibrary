@@ -2,12 +2,14 @@ package com.himanshu.editlibrary.EditingLibrary;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.himanshu.editlibrary.R;
@@ -41,7 +43,8 @@ public class FontPickerAdapter extends RecyclerView.Adapter<FontPickerAdapter.Vi
 
     @Override
     public void onBindViewHolder(FontPickerAdapter.ViewHolder holder, int position) {
-
+        Drawable mDrawable = ContextCompat.getDrawable(context, R.drawable.colors_item_background);
+        holder.colorPickerView.setBackground(mDrawable);
         holder.colorPickerView.setTypeface(colorPickerColors.get(position));
         holder.colorPickerView.setText("Aa");
 
