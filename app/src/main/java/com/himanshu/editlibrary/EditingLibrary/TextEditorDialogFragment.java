@@ -13,13 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -31,8 +28,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.himanshu.editlibrary.R;
-import com.himanshu.editlibrary.TextEdit.AutoFitEditText;
-import com.himanshu.editlibrary.Utils.AutoFitEditTextUtil;
 
 
 public class TextEditorDialogFragment extends DialogFragment{
@@ -40,7 +35,7 @@ public class TextEditorDialogFragment extends DialogFragment{
     public static final String TAG = TextEditorDialogFragment.class.getSimpleName();
     public static final String EXTRA_INPUT_TEXT = "extra_input_text";
     public static final String EXTRA_COLOR_CODE = "extra_color_code";
-    private AutoFitEditText mAddTextEditText;
+    private EditText mAddTextEditText;
     private ImageView mAddTextDoneTextView;
     private InputMethodManager mInputMethodManager;
     private int mColorCode;
@@ -51,26 +46,24 @@ public class TextEditorDialogFragment extends DialogFragment{
     SeekBar color_opacity;
     ImageView opacity_img, color_img, font_img, font_size_img, textsize_img;
     boolean show_color_opacity = false;
-    String[] font_Size = { "Small", "Medium", "Large"};
     int alpha_text = 1;
     public interface TextEditor {
         void onDone(String inputText, int colorCode, float textSize, Typeface font, int alpha_Text);
     }
 
-    public void initAutoFitEditText() {
+   /* public void initAutoFitEditText() {
         mAddTextEditText.setEnabled(true);
         mAddTextEditText.setFocusableInTouchMode(true);
         mAddTextEditText.setFocusable(true);
-        mAddTextEditText.setEnableSizeCache(false);
         //might cause crash on some devices
         mAddTextEditText.setMovementMethod(null);
         // can be added after layout inflation;
-        mAddTextEditText.setMaxHeight(250);
+        //mAddTextEditText.setMaxHeight(250);
         //don't forget to add min text size programmatically
-        mAddTextEditText.setMinTextSize(10f);
+        //mAddTextEditText.setMinTextSize(10f);
 
-        AutoFitEditTextUtil.setNormalization((AppCompatActivity) getActivity(), rootviewtext, mAddTextEditText);
-    }
+        //AutoFitEditTextUtil.setNormalization((AppCompatActivity) getActivity(), rootviewtext, mAddTextEditText);
+    }*/
 
     //Show dialog with provide text and text color
     public static TextEditorDialogFragment show(@NonNull AppCompatActivity appCompatActivity,
@@ -131,6 +124,7 @@ public class TextEditorDialogFragment extends DialogFragment{
         });
 
         mAddTextEditText = view.findViewById(R.id.add_text_edit_text);
+
         color_opacity = view.findViewById(R.id.color_opacity);
         color_opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -222,7 +216,7 @@ public class TextEditorDialogFragment extends DialogFragment{
         rootviewtext = view.findViewById(R.id.rootviewtext);
         mInputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         mAddTextDoneTextView = view.findViewById(R.id.add_text_done_tv);
-        initAutoFitEditText();
+        //initAutoFitEditText();
         //Setup the color picker for text color
         RecyclerView addTextColorPickerRecyclerView = view.findViewById(R.id.add_text_color_picker_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

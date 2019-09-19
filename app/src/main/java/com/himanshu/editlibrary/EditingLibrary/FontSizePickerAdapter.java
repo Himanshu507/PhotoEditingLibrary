@@ -80,6 +80,21 @@ public class FontSizePickerAdapter extends RecyclerView.Adapter<FontSizePickerAd
 
     public static List<Float> getDefaultColors(Context context) {
         ArrayList<Float> colorPickerColors = new ArrayList<>();
+        colorPickerColors.add(04f);
+        colorPickerColors.add(06f);
+        colorPickerColors.add(08f);
+        colorPickerColors.add(10f);
+        colorPickerColors.add(12f);
+        colorPickerColors.add(14f);
+        colorPickerColors.add(16f);
+        colorPickerColors.add(18f);
+        colorPickerColors.add(20f);
+        colorPickerColors.add(22f);
+        colorPickerColors.add(24f);
+        colorPickerColors.add(26f);
+        colorPickerColors.add(28f);
+        colorPickerColors.add(30f);
+        colorPickerColors.add(32f);
         colorPickerColors.add(34f);
         colorPickerColors.add(36f);
         colorPickerColors.add(38f);
@@ -94,21 +109,6 @@ public class FontSizePickerAdapter extends RecyclerView.Adapter<FontSizePickerAd
         colorPickerColors.add(56f);
         colorPickerColors.add(58f);
         colorPickerColors.add(60f);
-        colorPickerColors.add(62f);
-        colorPickerColors.add(64f);
-        colorPickerColors.add(66f);
-        colorPickerColors.add(68f);
-        colorPickerColors.add(70f);
-        colorPickerColors.add(72f);
-        colorPickerColors.add(74f);
-        colorPickerColors.add(76f);
-        colorPickerColors.add(78f);
-        colorPickerColors.add(80f);
-        colorPickerColors.add(82f);
-        colorPickerColors.add(84f);
-        colorPickerColors.add(86f);
-        colorPickerColors.add(88f);
-        colorPickerColors.add(90f);
         return colorPickerColors;
     }
 }

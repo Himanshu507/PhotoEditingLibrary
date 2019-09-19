@@ -58,7 +58,7 @@
         app:srcCompat="@drawable/check_vector"
         android:padding="10dp" />
 
-    <com.himanshu.editlibrary.TextEdit.AutoFitEditText
+    <EditText
         android:id="@+id/add_text_edit_text"
         style="@style/EditText"
         android:layout_width="wrap_content"
@@ -73,10 +73,11 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:textColorHint="#E4E4E4"
-        android:isScrollContainer="false"
-        android:maxLength="200"
-        android:inputType="textMultiLine"
-        android:textSize="40sp" />
+        android:textSize="30dp"
+        android:scrollbars="vertical"
+        android:background="@color/transparent"
+        android:isScrollContainer="true"
+        android:inputType="textMultiLine"/>
 
     <RelativeLayout
         android:id="@+id/font_size_relative_layout"
