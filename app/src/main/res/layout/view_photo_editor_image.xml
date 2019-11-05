@@ -27,7 +27,7 @@
             android:layout_margin="4dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_remove" />
 
     </FrameLayout>

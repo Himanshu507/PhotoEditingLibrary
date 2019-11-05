@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -17,6 +20,7 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -72,14 +76,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private static final String TAG = EditImageActivity.class.getSimpleName();
     private static final int CAMERA_REQUEST = 52;
     private static final int PICK_REQUEST = 53;
-    private static final int CROP_REQUEST = 54;
     private PhotoEditor mPhotoEditor;
     private PhotoEditorView mPhotoEditorView;
     private PropertiesBSFragment mPropertiesBSFragment;
-    private EmojiBSFragment mEmojiBSFragment;
     private StickerBSFragment mStickerBSFragment;
-    private Typeface mWonderFont;
-    private RecyclerView mRvTools, mRvFilters;
+    private RecyclerView mRvFilters;
     private FilterViewAdapter mFilterViewAdapter = new FilterViewAdapter(this);
     private ConstraintLayout mRootView;
     private ConstraintSet mConstraintSet = new ConstraintSet();
@@ -90,8 +91,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     ImageView text, filter, sticker, tools, set_filter, cancel_filter, oil_filter_img, Space;
     TextView text_oil;
     View upperview, lowerview;
-    Boolean upperbool = false, lowerbool = false;
-    Intent CropIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,38 +100,28 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         initViews();
 
-        mWonderFont = Typeface.createFromAsset(getAssets(), "beyond_wonderland.ttf");
-
         mPropertiesBSFragment = new PropertiesBSFragment();
-        mEmojiBSFragment = new EmojiBSFragment();
         mStickerBSFragment = new StickerBSFragment();
         mStickerBSFragment.setStickerListener(this);
-        //mEmojiBSFragment.setEmojiListener(this);
         mPropertiesBSFragment.setPropertiesChangeListener(this);
-
-       /* LinearLayoutManager llmTools = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRvTools.setLayoutManager(llmTools);
-        mRvTools.setAdapter(mEditingToolsAdapter);*/
 
         LinearLayoutManager llmFilters = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRvFilters.setLayoutManager(llmFilters);
         mRvFilters.setAdapter(mFilterViewAdapter);
         Bitmap bitmap = null;
         bitmap = image_temp.getPHOTO();
-        //image_temp.setPHOTO(null);
 
         mTextRobotoTf = ResourcesCompat.getFont(this, R.font.roboto_medium);
         mEmojiTypeFace = Typeface.createFromAsset(getAssets(), "emojione-android.ttf");
 
         mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
                 .setPinchTextScalable(true) // set flag to make text scalable when pinch
-                /*.setDefaultTextTypeface(mTextRobotoTf)
-                .setDefaultEmojiTypeface(mEmojiTypeFace)*/
                 .build(); // build photo editor sdk
 
         mPhotoEditor.setOnPhotoEditorListener(this);
 
         //Set Image Dynamically
+        //bitmap = Bitmap.createScaledBitmap(bitmap,width, height, false);
         mPhotoEditorView.getSource().setImageBitmap(bitmap);
         mRvFilters.setVisibility(View.GONE);
         oil_filter_img.setVisibility(View.GONE);
@@ -331,7 +320,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     }
 
     @Override
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -418,7 +406,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 dialog.dismiss();
             }
         });
-
         builder.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -433,7 +420,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     public void onFilterSelected(PhotoFilter photoFilter) {
         mPhotoEditor.setFilterEffect(photoFilter);
     }
-
 
     void showFilter(boolean isVisible) {
 
@@ -595,9 +581,40 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         return Uri.parse(path);
     }
 
+    public static Bitmap createImage(int width, int height, int color) {
 
-    public void mukul(){
-        Toast.makeText(getApplicationContext(),"Mukul function is called",Toast.LENGTH_SHORT).show();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        canvas.drawRect(0F, 0F, (float) width, (float) height, paint);
+        return bitmap;
+
     }
+
+    /*private Bitmap mergeBitmap(Bitmap src, Bitmap watermark) {
+        if (src == null) {
+            return null;
+        }
+        int w = src.getWidth();
+        int h = src.getHeight();
+
+        Bitmap newb = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas cv = new Canvas(newb);
+
+        // draw src into canvas
+        cv.drawBitmap(src, 0, 0, null);
+
+        // draw watermark into
+        cv.drawBitmap(watermark, null, new Rect(9, 25, 154, 245), null);
+
+        // save all clip
+        cv.save(Canvas.ALL_SAVE_FLAG);
+
+        // store
+        cv.restore();
+
+        return newb;
+    }*/
 
 }

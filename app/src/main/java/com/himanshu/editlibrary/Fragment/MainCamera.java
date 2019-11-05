@@ -32,7 +32,6 @@ public class MainCamera extends Fragment {
 
     ImageView capture, swap, flash, cancel;
     CameraView cameraView;
-    File file;
     boolean swapbool = false, flashbool = false;
 
 
